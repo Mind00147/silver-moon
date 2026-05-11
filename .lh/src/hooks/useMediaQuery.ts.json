@@ -1,0 +1,22 @@
+{
+    "sourceFile": "src/hooks/useMediaQuery.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1778501812010,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1778501821009,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,18 @@\n+'use client';\r\n+\r\n+import { useState, useEffect } from 'react';\r\n+\r\n+export function useMediaQuery(query: string): boolean {\r\n+  const [matches, setMatches] = useState(false);\r\n+\r\n+  useEffect(() => {\r\n+    const media = window.matchMedia(query);\r\n+    setMatches(media.matches);\r\n+\r\n+    const listener = (e: MediaQueryListEvent) => setMatches(e.matches);\r\n+    media.addEventListener('change', listener);\r\n+    return () => media.removeEventListener('change', listener);\r\n+  }, [query]);\r\n+\r\n+  return matches;\r\n+}\n\\ No newline at end of file\n"
+                }
+            ],
+            "date": 1778501812010,
+            "name": "Commit-0",
+            "content": ""
+        }
+    ]
+}

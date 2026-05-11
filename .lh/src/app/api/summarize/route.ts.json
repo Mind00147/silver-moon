@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/app/api/summarize/route.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778432516958,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778432516958,
+            "name": "Commit-0",
+            "content": "import { NextRequest } from 'next/server';\r\n\r\nexport async function POST(req: NextRequest) {\r\n  const apiKey = process.env.DEEPSEEK_API_KEY;\r\n  if (!apiKey) {\r\n    return Response.json({ error: '大脑燃料未配置' }, { status: 500 });\r\n  }\r\n\r\n  try {\r\n    const { previousSummary, newMessages, version } = await req.json();\r\n\r\n    // 格式化对话历史\r\n    const conversationText = newMessages\r\n      .map((msg: { role: string; content: string }) =>\r\n        `[${msg.role === 'user' ? '主人' : '银月'}]: ${msg.content}`\r\n      )\r\n      .join('\\n\\n');\r\n\r\n    // 构建递归总结提示词\r\n    const systemPrompt = previousSummary\r\n      ? `你是银月的摘要官。以下是此前所有对话的摘要（版本 v${version}）：\\n${previousSummary}\\n\\n以下是最近 20 轮新对话：\\n${conversationText}\\n\\n请将上述旧摘要和新对话合并，生成一份涵盖从第 1 轮至今的完整新摘要（不超过 500 字）。近期对话保留更多细节，早期对话压缩为关键脉络。`\r\n      : `你是银月的摘要官。以下是前 20 轮对话：\\n${conversationText}\\n\\n请生成一份摘要，涵盖核心主题、关键决策、未解决问题（不超过 300 字）。`;\r\n\r\n    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {\r\n      method: 'POST',\r\n      headers: {\r\n        'Content-Type': 'application/json',\r\n        'Authorization': `Bearer ${apiKey}`,\r\n      },\r\n      body: JSON.stringify({\r\n        model: 'deepseek-v4-pro',\r\n        messages: [\r\n          { role: 'system', content: systemPrompt },\r\n          { role: 'user', content: '请生成摘要。' },\r\n        ],\r\n        max_tokens: 800,\r\n        temperature: 0.3,\r\n        stream: false,\r\n      }),\r\n    });\r\n\r\n    if (!response.ok) {\r\n      return Response.json({ error: `摘要生成失败: ${response.status}` }, { status: 500 });\r\n    }\r\n\r\n    const data = await response.json();\r\n    const summary = data.choices?.[0]?.message?.content?.trim() || '';\r\n\r\n    return Response.json({\r\n      success: true,\r\n      summary,\r\n      version: (version || 0) + 1,\r\n    });\r\n  } catch (error) {\r\n    console.error('[Summarize] 出错:', error);\r\n    return Response.json({ error: '摘要生成异常' }, { status: 500 });\r\n  }\r\n}"
+        }
+    ]
+}

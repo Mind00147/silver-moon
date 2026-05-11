@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/components/PictureAnalysis.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778490818035,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778490818035,
+            "name": "Commit-0",
+            "content": "'use client';\r\n\r\ninterface Props {\r\n  isAnalyzing: boolean;\r\n  result?: string;\r\n}\r\n\r\nexport default function PictureAnalysis({ isAnalyzing, result }: Props) {\r\n  if (!isAnalyzing && !result) return null;\r\n\r\n  return (\r\n    <div className=\"flex justify-start\">\r\n      <div className=\"bg-gray-900/40 border border-gray-700 rounded-lg px-4 py-2 text-sm max-w-[80%]\">\r\n        {isAnalyzing && !result && (\r\n          <div className=\"flex items-center gap-2 text-gray-400\">\r\n            <span className=\"animate-pulse\">🔍</span>\r\n            <span className=\"italic\">正在分析截图...</span>\r\n          </div>\r\n        )}\r\n        {result && (\r\n          <div className=\"text-gray-300 whitespace-pre-wrap\">\r\n            <span className=\"text-xs text-gray-500 block mb-1\">📷 截图分析结果：</span>\r\n            {result}\r\n          </div>\r\n        )}\r\n      </div>\r\n    </div>\r\n  );\r\n}"
+        }
+    ]
+}
