@@ -1,0 +1,18 @@
+{
+    "sourceFile": "next.config.mjs",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778506649872,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778506649872,
+            "name": "Commit-0",
+            "content": "import pwa from 'next-pwa';\n\nconst withPWA = pwa({\n  dest: 'public',\n  register: true,\n  skipWaiting: true,\n  disable: process.env.NODE_ENV === 'development',\n});\n\n/** @type {import('next').NextConfig} */\nconst nextConfig = {};\n\nexport default withPWA(nextConfig);"
+        }
+    ]
+}

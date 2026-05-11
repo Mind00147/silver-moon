@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/hooks/useMemories.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778430324000,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778430324000,
+            "name": "Commit-0",
+            "content": "'use client';\r\n\r\nimport { useState, useEffect, useCallback } from 'react';\r\nimport { MemoryEngine } from '@/lib/memory-engine';\r\nimport type { Memory } from '@/lib/types';\r\n\r\nexport function useMemories(project: string) {\r\n  const [memories, setMemories] = useState<Memory[]>([]);\r\n  const [loaded, setLoaded] = useState(false);\r\n  const [engine, setEngine] = useState<MemoryEngine | null>(null);\r\n\r\n  // 初始化引擎\r\n  useEffect(() => {\r\n    setEngine(new MemoryEngine(project));\r\n  }, [project]);\r\n\r\n  // 加载记忆\r\n  useEffect(() => {\r\n    if (!engine) return;\r\n    engine.getAllMemories().then(setMemories).then(() => setLoaded(true));\r\n  }, [engine]);\r\n\r\n  // 添加记忆（银月回复：先精炼；用户消息：直接存）\r\n  const addMemory = useCallback(async (content: string, isUserMessage: boolean) => {\r\n    if (!engine) return;\r\n\r\n    let finalContent = content;\r\n\r\n    // 用户消息直接存原文，银月回复调用 API 精炼\r\n    if (!isUserMessage) {\r\n      try {\r\n        const res = await fetch('/api/engine', {\r\n          method: 'POST',\r\n          headers: { 'Content-Type': 'application/json' },\r\n          body: JSON.stringify({\r\n            messages: [{\r\n              role: 'user',\r\n              content: `请将以下内容提炼为一句核心规则（不超过100字）：\\n\\n${content}`\r\n            }],\r\n            turnNumber: 1,\r\n          }),\r\n        });\r\n        const data = await res.json();\r\n        if (data.reply) {\r\n          finalContent = data.reply;\r\n        }\r\n      } catch {}\r\n    }\r\n\r\n    const newMemory: Memory = {\r\n      id: Date.now().toString(),\r\n      type: isUserMessage ? 'preference' : 'rule',\r\n      content: finalContent.substring(0, 200),\r\n      title: finalContent.replace(/[，,。.！!？?\\n]/g, ' ').substring(0, 20),\r\n      createdAt: new Date().toISOString(),\r\n    };\r\n\r\n    await engine.addMemory(newMemory);\r\n    setMemories(prev => [...prev, newMemory]);\r\n  }, [engine]);\r\n\r\n  // 更新记忆\r\n  const updateMemory = useCallback(async (id: string, content: string, title: string) => {\r\n    if (!engine) return;\r\n    await engine.updateMemory(id, content, title);\r\n    setMemories(prev => prev.map(m => m.id === id ? { ...m, content, title } : m));\r\n  }, [engine]);\r\n\r\n  // 删除记忆\r\n  const deleteMemory = useCallback(async (id: string) => {\r\n    if (!engine) return;\r\n    await engine.deleteMemory(id);\r\n    setMemories(prev => prev.filter(m => m.id !== id));\r\n  }, [engine]);\r\n\r\n  // 获取记忆上下文（用于注入 engine）\r\n  const getMemoryContext = useCallback(async (): Promise<string> => {\r\n    if (!engine) return '';\r\n    return await engine.getMemoryContext();\r\n  }, [engine]);\r\n\r\n  return {\r\n    memories,\r\n    loaded,\r\n    addMemory,\r\n    updateMemory,\r\n    deleteMemory,\r\n    getMemoryContext,\r\n  };\r\n}"
+        }
+    ]
+}

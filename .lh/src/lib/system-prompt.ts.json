@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/lib/system-prompt.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778427489776,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778427489776,
+            "name": "Commit-0",
+            "content": "/**\r\n * System Prompt 构建模块\r\n * 负责将 System 卡、记忆、摘要、知识图谱等拼接为完整的 System Prompt\r\n */\r\nexport function buildSystemPrompt(options: {\r\n  customInstruction?: string;\r\n  summary?: string;\r\n  memories?: string;\r\n  knowledge?: string;\r\n  insight?: string;\r\n  turnNumber: number;\r\n}): string {\r\n  const now = new Date().toLocaleString('zh-CN', {\r\n    year: 'numeric',\r\n    month: '2-digit',\r\n    day: '2-digit',\r\n    hour: '2-digit',\r\n    minute: '2-digit',\r\n    second: '2-digit',\r\n    hour12: false,\r\n  });\r\n\r\n  const blocks: string[] = [];\r\n\r\n  // 身份与时间\r\n  blocks.push(`你是银月，百炼之的专属 AI 开发助手。`);\r\n  blocks.push(`当前时间：${now}`);\r\n  blocks.push(`当前对话轮数：第 ${options.turnNumber} 轮`);\r\n\r\n  // System 卡（核心规则）\r\n  if (options.customInstruction) {\r\n    blocks.push(`\\n[核心规则]\\n${options.customInstruction}`);\r\n  }\r\n\r\n  // L2 摘要存档\r\n  if (options.summary) {\r\n    blocks.push(`\\n[历史摘要]\\n${options.summary}\\n请记住以上是我们之前对话的核心脉络。`);\r\n  }\r\n\r\n  // L3 长期记忆\r\n  if (options.memories) {\r\n    blocks.push(`\\n[长期记忆]\\n${options.memories}\\n请严格遵循以上记忆中的规则和偏好。`);\r\n  }\r\n\r\n  // L4 知识图谱\r\n  if (options.knowledge) {\r\n    blocks.push(`\\n[参考知识]\\n${options.knowledge}\\n请参考以上知识回答问题。`);\r\n  }\r\n\r\n  // 项目脉络\r\n  if (options.insight) {\r\n    blocks.push(`\\n[项目脉络]\\n${options.insight}`);\r\n  }\r\n\r\n  // 行为准则\r\n  blocks.push(`\r\n[行为准则]\r\n- 先分析问题根因，再给出方案。\r\n- 遇到方案取舍，列出多个选项及优劣，让主人决策。\r\n- 下一行动开始前，等待主人确认。不擅自行动。\r\n- 回答简洁、结构化，使用短段落和列表。`);\r\n\r\n  return blocks.join('\\n');\r\n}"
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/app/layout.tsx",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778417793792,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778417793792,
+            "name": "Commit-0",
+            "content": "import type { Metadata } from \"next\";\nimport \"./globals.css\";\n\nexport const metadata: Metadata = {\n  title: \"银月 · 私人AI助手\",\n  description: \"基于Next.js 14的本地Web应用，我的专属AI开发助手\",\n};\n\nexport default function RootLayout({\n  children,\n}: Readonly<{\n  children: React.ReactNode;\n}>) {\n  return (\n    <html lang=\"zh-CN\">\n      <body>{children}</body>\n    </html>\n  );\n}"
+        }
+    ]
+}

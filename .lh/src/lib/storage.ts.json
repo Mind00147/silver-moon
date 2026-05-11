@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/lib/storage.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1778421731367,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1778421731367,
+            "name": "Commit-0",
+            "content": "import localforage from 'localforage';\r\n\r\n// 初始化 localforage 实例\r\nconst storage = localforage.createInstance({\r\n  name: 'silver-moon',\r\n  storeName: 'app_data',\r\n});\r\n\r\n/**\r\n * 统一存储接口\r\n * 所有本地数据读写必须通过此模块\r\n */\r\nexport const StorageAdapter = {\r\n  async get<T>(key: string): Promise<T | null> {\r\n    try {\r\n      const value = await storage.getItem<T>(key);\r\n      return value ?? null;\r\n    } catch {\r\n      return null;\r\n    }\r\n  },\r\n\r\n  async set<T>(key: string, value: T): Promise<void> {\r\n    try {\r\n      await storage.setItem(key, value);\r\n    } catch (error) {\r\n      console.error(`[Storage] 写入失败: ${key}`, error);\r\n    }\r\n  },\r\n\r\n  async remove(key: string): Promise<void> {\r\n    try {\r\n      await storage.removeItem(key);\r\n    } catch (error) {\r\n      console.error(`[Storage] 删除失败: ${key}`, error);\r\n    }\r\n  },\r\n\r\n  async keys(): Promise<string[]> {\r\n    try {\r\n      return await storage.keys();\r\n    } catch {\r\n      return [];\r\n    }\r\n  },\r\n};"
+        }
+    ]
+}
