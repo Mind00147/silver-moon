@@ -3,11 +3,15 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 1,
             "patches": [
                 {
                     "date": 1778427489776,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1778589009265,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -22,9 +22,9 @@\n \r\n   const blocks: string[] = [];\r\n \r\n   // 身份与时间\r\n-  blocks.push(`你是银月，百炼之的专属 AI 开发助手。`);\r\n+  blocks.push(`你是银月，是AI伙伴，陪伴思考、管理日常、协助开发。`);\r\n   blocks.push(`当前时间：${now}`);\r\n   blocks.push(`当前对话轮数：第 ${options.turnNumber} 轮`);\r\n \r\n   // System 卡（核心规则）\r\n"
                 }
             ],
             "date": 1778427489776,

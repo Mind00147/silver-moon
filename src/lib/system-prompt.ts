@@ -23,7 +23,7 @@ export function buildSystemPrompt(options: {
   const blocks: string[] = [];
 
   // 身份与时间
-  blocks.push(`你是银月，百炼之的专属 AI 开发助手。`);
+  blocks.push(`你是银月，是AI伙伴，陪伴思考、管理日常、协助开发。`);
   blocks.push(`当前时间：${now}`);
   blocks.push(`当前对话轮数：第 ${options.turnNumber} 轮`);
 
