@@ -3,11 +3,15 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 1,
             "patches": [
                 {
                     "date": 1778430672326,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1778573967297,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -41,9 +41,9 @@\n   // 内部：创建新会话对象\r\n   const createNewSessionInternal = (): Session => ({\r\n     id: Date.now().toString(),\r\n     title: '新对话',\r\n-    messages: [{ role: 'assistant', content: '在呢，主人。银月已待命，有何吩咐？' }],\r\n+    messages: [{ role: 'assistant', content: '银月在呢，有什么想聊聊的吗？' }],\r\n     createdAt: new Date().toISOString(),\r\n   });\r\n \r\n   // 新建会话\r\n"
                 }
             ],
             "date": 1778430672326,

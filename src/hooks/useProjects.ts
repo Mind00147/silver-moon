@@ -10,14 +10,36 @@ export function useProjects() {
   const [currentProject, setCurrentProject] = useState<string>(DEFAULT_PROJECT);
   const [projectList, setProjectList] = useState<string[]>([DEFAULT_PROJECT]);
   const [loaded, setLoaded] = useState(false);
+  const [pinnedProject, setPinnedProject] = useState<string>('');
 
-  // 初始化
+  // 设置置顶项目
+  const pinProject = async (name: string) => {
+    setPinnedProject(name);
+    setCurrentProject(name);
+    await StorageAdapter.set('pinned_project', name);
+  };
+
+  // 取消置顶
+  const unpinProject = async () => {
+    setPinnedProject('');
+    await StorageAdapter.remove('pinned_project');
+  };
+
+  // 初始化：优先使用置顶项目
   useEffect(() => {
     async function load() {
       const saved = await StorageAdapter.get<string[]>(PROJECT_LIST_KEY);
+      const pinned = await StorageAdapter.get<string>('pinned_project');
+      
       if (saved && saved.length > 0) {
         setProjectList(saved);
-        setCurrentProject(saved[0]);
+        // 如果有置顶项目且存在于列表中，就用它；否则用第一个
+        if (pinned && saved.includes(pinned)) {
+          setCurrentProject(pinned);
+          setPinnedProject(pinned);
+        } else {
+          setCurrentProject(saved[0]);
+        }
       }
       setLoaded(true);
     }
@@ -59,8 +81,11 @@ export function useProjects() {
     currentProject,
     projectList,
     loaded,
+    pinnedProject,
     switchProject,
     addProject,
     deleteProject,
+    pinProject,
+    unpinProject,
   };
 }

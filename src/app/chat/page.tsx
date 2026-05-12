@@ -33,6 +33,9 @@ export default function ChatPage() {
     switchProject,
     addProject,
     deleteProject,
+    pinProject,
+    unpinProject,
+    pinnedProject,
   } = useProjects();
 
   // ========== 会话管理 ==========
@@ -573,7 +576,25 @@ ${forceInsight}
               <div className="space-y-2 max-h-48 overflow-y-auto mb-4">
                 {projectList.map((project) => (
                   <div key={project} className="flex items-center justify-between bg-gray-800 rounded-lg px-3 py-2">
-                    <span className="text-xs text-gray-300">{project}</span>
+                    <div className="flex items-center gap-2 flex-1">
+                      <span className="text-xs text-gray-300">{project}</span>
+                      {pinnedProject === project && (
+                        <span className="text-xs text-yellow-400">★</span>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => {
+                        if (pinnedProject === project) {
+                          unpinProject();
+                        } else {
+                          pinProject(project);
+                        }
+                      }}
+                      className={`text-xs transition mr-2 ${pinnedProject === project ? 'text-yellow-400 hover:text-yellow-300' : 'text-gray-500 hover:text-yellow-400'}`}
+                      title={pinnedProject === project ? '取消置顶' : '置顶'}
+                    >
+                      {pinnedProject === project ? '★' : '☆'}
+                    </button>
                     {projectList.length > 1 && (
                       <button
                         onClick={() => deleteProject(project)}
@@ -911,7 +932,25 @@ ${forceInsight}
                   key={project}
                   className="flex items-center justify-between bg-gray-800 rounded-lg px-3 py-2"
                 >
-                  <span className="text-xs text-gray-300">{project}</span>
+                  <div className="flex items-center gap-2 flex-1">
+                    <span className="text-xs text-gray-300">{project}</span>
+                    {pinnedProject === project && (
+                      <span className="text-xs text-yellow-400">★</span>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => {
+                      if (pinnedProject === project) {
+                        unpinProject();
+                      } else {
+                        pinProject(project);
+                      }
+                    }}
+                    className={`text-xs transition mr-2 ${pinnedProject === project ? 'text-yellow-400 hover:text-yellow-300' : 'text-gray-500 hover:text-yellow-400'}`}
+                    title={pinnedProject === project ? '取消置顶' : '置顶'}
+                  >
+                    {pinnedProject === project ? '★' : '☆'}
+                  </button>
                   {projectList.length > 1 && (
                     <button
                       onClick={() => deleteProject(project)}

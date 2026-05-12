@@ -42,7 +42,7 @@ export function useSessions(currentProject: string, loaded: boolean) {
   const createNewSessionInternal = (): Session => ({
     id: Date.now().toString(),
     title: '新对话',
-    messages: [{ role: 'assistant', content: '在呢，主人。银月已待命，有何吩咐？' }],
+    messages: [{ role: 'assistant', content: '银月在呢，有什么想聊聊的吗？' }],
     createdAt: new Date().toISOString(),
   });
 
