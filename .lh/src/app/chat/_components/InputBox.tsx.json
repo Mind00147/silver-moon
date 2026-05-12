@@ -3,11 +3,15 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 1,
             "patches": [
                 {
                     "date": 1778428645369,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1778563023022,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,11 +4,12 @@\n \r\n interface Props {\r\n   onSend: (message: string, image: string | null) => void;\r\n   disabled: boolean;\r\n+  enterToSend?: boolean;   // 新增：Enter 键是否发送，默认 true（桌面端）\r\n }\r\n \r\n-export default function InputBox({ onSend, disabled }: Props) {\r\n+export default function InputBox({ onSend, disabled, enterToSend }: Props) {\r\n   const [input, setInput] = useState(\"\");\r\n   const [pastedImage, setPastedImage] = useState<string | null>(null);\r\n   const textareaRef = useRef<HTMLTextAreaElement>(null);\r\n   const fileInputRef = useRef<HTMLInputElement>(null);\r\n@@ -35,10 +36,13 @@\n \r\n   // Enter 发送，Shift+Enter 换行\r\n   const handleKeyDown = (e: React.KeyboardEvent) => {\r\n     if (e.key === \"Enter\" && !e.shiftKey) {\r\n-      e.preventDefault();\r\n-      handleSend();\r\n+      if (enterToSend !== false) {   // 只有桌面端（或明确传 true）时，Enter 直接发送\r\n+        e.preventDefault();\r\n+        handleSend();\r\n+      }\r\n+      // 手机端 enterToSend=false，不做任何拦截，默认行为即换行\r\n     }\r\n   };\r\n \r\n   // 粘贴图片\r\n@@ -118,9 +122,9 @@\n             value={input}\r\n             onChange={handleChange}\r\n             onKeyDown={handleKeyDown}\r\n             onPaste={handlePaste}\r\n-            placeholder=\"直接粘贴截图，或输入文字... (Enter 发送，Shift+Enter 换行)\"\r\n+            placeholder=\"请输入...\"\r\n             rows={1}\r\n             className=\"flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500 resize-none text-gray-200\"\r\n             disabled={disabled}\r\n           />\r\n"
                 }
             ],
             "date": 1778428645369,

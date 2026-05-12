@@ -401,7 +401,7 @@ ${forceInsight}
               <div ref={messagesEndRef} />
             </main>
 
-            <InputBox onSend={handleSend} disabled={loading} />
+            <InputBox onSend={handleSend} disabled={loading} enterToSend={false} />
           </>
         ) : (
           /* 工作面板全屏页 */
@@ -535,6 +535,94 @@ ${forceInsight}
             </div>
           </div>
         )}
+
+        {/* 确认删除弹窗 */}
+        {confirmDeleteId && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+            <div className="bg-gray-900 border border-gray-700 rounded-xl p-6 max-w-sm w-full mx-4 shadow-2xl">
+              <p className="text-sm text-gray-300 mb-2">主人，确认要删除这个会话？</p>
+              <p className="text-xs text-gray-500 mb-6">
+                「{sessions.find((s: Session) => s.id === confirmDeleteId)?.title || "未命名"}」
+              </p>
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => setConfirmDeleteId("")}
+                  className="px-4 py-2 text-xs text-gray-400 hover:text-gray-200 bg-gray-800 hover:bg-gray-700 rounded-lg transition"
+                >
+                  再想想
+                </button>
+                <button
+                  onClick={() => {
+                    deleteSession(confirmDeleteId);
+                    setConfirmDeleteId("");
+                  }}
+                  className="px-4 py-2 text-xs text-white bg-red-600 hover:bg-red-500 rounded-lg transition"
+                >
+                  确认删除
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 项目管理弹窗 */}
+        {showProjectManager && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+            <div className="bg-gray-900 border border-gray-700 rounded-xl p-6 max-w-sm w-full mx-4 shadow-2xl">
+              <p className="text-sm font-semibold text-gray-200 mb-4">管理项目</p>
+              <div className="space-y-2 max-h-48 overflow-y-auto mb-4">
+                {projectList.map((project) => (
+                  <div key={project} className="flex items-center justify-between bg-gray-800 rounded-lg px-3 py-2">
+                    <span className="text-xs text-gray-300">{project}</span>
+                    {projectList.length > 1 && (
+                      <button
+                        onClick={() => deleteProject(project)}
+                        className="text-xs text-red-400 hover:text-red-300"
+                      >
+                        删除
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-2 mb-4">
+                <input
+                  type="text"
+                  placeholder="新项目名称"
+                  value={newProjectName}
+                  onChange={(e) => setNewProjectName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && newProjectName.trim()) {
+                      addProject(newProjectName.trim());
+                      setNewProjectName("");
+                    }
+                  }}
+                  className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-xs text-gray-200 focus:outline-none focus:border-blue-500"
+                />
+                <button
+                  onClick={() => {
+                    if (newProjectName.trim()) {
+                      addProject(newProjectName.trim());
+                      setNewProjectName("");
+                    }
+                  }}
+                  className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-xs transition"
+                >
+                  添加
+                </button>
+              </div>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setShowProjectManager(false)}
+                  className="px-4 py-2 text-xs text-gray-400 hover:text-gray-200 bg-gray-800 hover:bg-gray-700 rounded-lg transition"
+                >
+                  关闭
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
     );
   }
@@ -544,7 +632,7 @@ ${forceInsight}
     <div className="flex h-screen bg-gray-950 text-gray-100">
       {/* ===== 确认删除弹窗 ===== */}
       {confirmDeleteId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="bg-gray-900 border border-gray-700 rounded-xl p-6 max-w-sm w-full mx-4 shadow-2xl">
             <p className="text-sm text-gray-300 mb-2">主人，确认要删除这个会话？</p>
             <p className="text-xs text-gray-500 mb-6">

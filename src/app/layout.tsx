@@ -13,6 +13,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#030712" />
+      </head>
       <body>{children}</body>
     </html>
   );

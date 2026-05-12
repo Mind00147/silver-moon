@@ -5,9 +5,10 @@ import { useState, useRef } from "react";
 interface Props {
   onSend: (message: string, image: string | null) => void;
   disabled: boolean;
+  enterToSend?: boolean;   // 新增：Enter 键是否发送，默认 true（桌面端）
 }
 
-export default function InputBox({ onSend, disabled }: Props) {
+export default function InputBox({ onSend, disabled, enterToSend }: Props) {
   const [input, setInput] = useState("");
   const [pastedImage, setPastedImage] = useState<string | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -36,8 +37,11 @@ export default function InputBox({ onSend, disabled }: Props) {
   // Enter 发送，Shift+Enter 换行
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
+      if (enterToSend !== false) {   // 只有桌面端（或明确传 true）时，Enter 直接发送
+        e.preventDefault();
+        handleSend();
+      }
+      // 手机端 enterToSend=false，不做任何拦截，默认行为即换行
     }
   };
 
@@ -119,7 +123,7 @@ export default function InputBox({ onSend, disabled }: Props) {
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             onPaste={handlePaste}
-            placeholder="直接粘贴截图，或输入文字... (Enter 发送，Shift+Enter 换行)"
+            placeholder="请输入..."
             rows={1}
             className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-blue-500 resize-none text-gray-200"
             disabled={disabled}

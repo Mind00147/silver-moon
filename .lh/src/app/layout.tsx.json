@@ -3,11 +3,15 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 1,
             "patches": [
                 {
                     "date": 1778417793792,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1778564066553,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,19 +1,23 @@\n-import type { Metadata } from \"next\";\n-import \"./globals.css\";\n-\n-export const metadata: Metadata = {\n-  title: \"银月 · 私人AI助手\",\n-  description: \"基于Next.js 14的本地Web应用，我的专属AI开发助手\",\n-};\n-\n-export default function RootLayout({\n-  children,\n-}: Readonly<{\n-  children: React.ReactNode;\n-}>) {\n-  return (\n-    <html lang=\"zh-CN\">\n-      <body>{children}</body>\n-    </html>\n-  );\n+import type { Metadata } from \"next\";\r\n+import \"./globals.css\";\r\n+\r\n+export const metadata: Metadata = {\r\n+  title: \"银月 · 私人AI助手\",\r\n+  description: \"基于Next.js 14的本地Web应用，我的专属AI开发助手\",\r\n+};\r\n+\r\n+export default function RootLayout({\r\n+  children,\r\n+}: Readonly<{\r\n+  children: React.ReactNode;\r\n+}>) {\r\n+  return (\r\n+    <html lang=\"zh-CN\">\r\n+      <head>\r\n+        <link rel=\"manifest\" href=\"/manifest.json\" />\r\n+        <meta name=\"theme-color\" content=\"#030712\" />\r\n+      </head>\r\n+      <body>{children}</body>\r\n+    </html>\r\n+  );\r\n }\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1778417793792,
